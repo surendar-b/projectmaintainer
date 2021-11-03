@@ -1,0 +1,42 @@
+.txt
+{
+color:blue;
+text-align:center;
+}
+.txth
+{
+color:blue;
+text-align:center;
+MARGIN-top:75px;
+}
+body 
+{
+background-color: #00FFFF;
+}
+.btn
+{
+background-color:Blue;
+color:white;
+font-size:25px;
+border-radius:5PX;
+}
+.note
+{
+color:red; 
+text-align:center; 
+font-weight:bold; 
+font-size:20px;
+}
+.menu
+{
+background-color:#dddddd;
+padding:8px;
+}
+li{
+float:left;
+display:inline;
+}
+li a {
+  display:inline;
+  padding: 8px;
+}

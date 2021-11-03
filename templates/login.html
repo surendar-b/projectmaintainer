@@ -1,0 +1,30 @@
+<html>
+<head>
+<link rel="stylesheet" href="../static/login.css">
+</head>
+<body>
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+    <h2 class="active"> Sign In </h2>
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="{{url_for('static', filename='transparent.png')}}" id="icon" alt="User Icon" />
+    </div>
+    <!-- Login Form -->
+    <form action="{{url_for('login')}}" method="post" autocomplete="off"> 
+      <input type="text" id="uname" class="fadeIn second" name="uname" placeholder="UserName">
+      <input type="text" id="pwd" class="fadeIn third" name="pwd" placeholder="Password">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+    </form>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
