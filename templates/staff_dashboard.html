@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/menu.css">
+        <link rel="stylesheet" href="../static/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    </head>
+    <body onload="staffView();">
+        <div class="topnav" id="myTopnav">
+            <a href="{{url_for('staffhome')}}" class="active">Home</a>
+            <a href="{{url_for('logout')}}">logout</a>
+            </div><br>
+         
+         
+            <lable style="margin-left:50px; font-weight:bold; font-size:20px;">Search</lable>
+            <input type="text" style="margin-left:9px;" placeholder="ex:2020-2021" id="batch">
+            <input type="button" value="search" id="searchbtn" class="btn">
+            <div id="studentview"></div>
+    </body>
+    <script>
+        //login function
+        function staffView(){
+            $.ajax({
+                 url: "/staff/studentlist",
+                 type: "GET",
+                 contentType: "application/json",
+                 success: function(result) {
+                    console.log(result);
+                    var content="<table class='styled-table' border='8px'><thead><tr><th>ID</th><th>Name</th><th>ProjectName</th><th>Batch</th><th>Status</th><th>Review1</th><th>Review2</th><th>Review3</th></tr></thead><tbody>"
+                    if (result.status==200){
+                        for (var i=0; i < result.data.length; i++) {
+                            var td=""
+                            td="<tr><td>"+result.data[i].stud_id+"</td><td>"+result.data[i].uname+"</td><td>"+result.data[i].projectName+"</td><td>"+result.data[i].batch+"</td><td>"+result.data[i].status+"</td><td>"+result.data[i].r1+"</td><td>"+result.data[i].r2+"</td><td>"+result.data[i].r3+"</td><td> <a href='/staffupdate/"+result.data[i].stud_id+"'> UpdateStatus </a><br><a href='/staffupdate/review/"+result.data[i].stud_id+"'> updateReview </a></td></tr>"
+                            content=content+td                       
+                        }
+                        content=content+"</tbody></table>"
+                         console.log("content",content)
+                        $('#studentview').html(content)
+                    }
+                 },
+                error: function(err){
+                    console.log(err)
+                  alert(err)
+                }
+             })
+            }
+            $("document").ready(function(){
+            $("#searchbtn").click(function(){
+                console.log("hsfdhvshvdhgshagch");
+                var batch = $("#batch").val();
+            $.ajax({
+                 url: "/staff/search/"+batch,
+                 type: "GET",
+                 contentType: "application/json",
+                 success: function(result) {
+                    console.log(result);
+                    var content="<table class='styled-table' border='8px'><thead><tr><th>ID</th><th>Name</th><th>ProjectName</th><th>Batch</th><th>Status</th><th>Review1</th><th>Review2</th><th>Review3</th></tr></thead><tbody>"
+                    if (result.status==200){
+                        for (var i=0; i < result.data.length; i++) {
+                            var td=""
+                            td="<tr><td>"+result.data[i].stud_id+"</td><td>"+result.data[i].uname+"</td><td>"+result.data[i].projectName+"</td><td>"+result.data[i].batch+"</td><td>"+result.data[i].status+"</td><td>"+result.data[i].r1+"</td><td>"+result.data[i].r2+"</td><td>"+result.data[i].r3+"</td><td> <a href='/staffupdate/"+result.data[i].stud_id+"'> UpdateStatus </a><br><a href='/staffupdate/review/"+result.data[i].stud_id+"'> updateReview </a></td></tr>"
+                            content=content+td                       
+                        }
+                        content=content+"</tbody></table>"
+                         console.log("content",content)
+                        $('#studentview').html(content)
+                    }
+                 },
+                error: function(err){
+                    console.log(err)
+                  alert(err)
+                }
+             })
+            })
+        })
+</script>
+</html>

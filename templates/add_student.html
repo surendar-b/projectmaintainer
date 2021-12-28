@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/menu.css">
+        <link rel="stylesheet" href="../static/style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="topnav" id="myTopnav">
+            <a href="{{url_for('student')}}" class="active">Student</a>
+            <a href="{{url_for('staff')}}">Staff</a>
+            </div>
+        <div>
+            <h1 class="txt">WELCOME</h1>
+            <h2 class="txt">Add Students</h2>
+            <form>
+            <table>
+            <tr>
+                <td><label>User_ID</label></td>
+                <td><label for="inputPassword4">Password</label></td>
+            </tr>
+            <tr>
+                <td><input type="text" class="form-control" id="uid" placeholder="user_id" required></td>
+                <td><input type="password" class="form-control" id="pwd" placeholder="Password" required></td></tr>
+            <tr> 
+            <tr>
+                <td><label for="inputAddress2">Name</label></td>
+                <td><label for="inputCity">Batch</label></td>
+                <td><label for="inputCity">Department</label></td>
+            </tr>  
+                    <td><input type="text" class="form-control" id="name" placeholder="Name" required></td>
+                    <td><input type="text" class="form-control" id="batch" placeholder="ex:2020-2021" required></td>
+                    <td><input type="text" class="form-control" id="department" placeholder="MCA" required></td>
+                   <tr><td><button type="submit" id="addstudent" class="btn">Add</button></td></tr>
+                </tr>
+            </table>
+            </form>
+        </div>
+    </body>
+</html>
+
+<script>
+    $("document").ready(function(){
+     $("#addstudent").click(function(){
+         var uid = $("#uid").val();
+         var pwd= $("#pwd").val();
+         var uname = $("#name").val();
+         var dep = $("#department").val();
+         var batch = $("#batch").val();
+         $.ajax({
+             url: "/add",
+             type: "POST",
+             contentType: "application/json",
+             data: JSON.stringify({"uid": uid,"type":"student","uname":uname,"password":pwd,"batch": batch,"department":dep}),
+             success: function(result) {
+                console.log(result);
+                if (result.status == 200){
+                    window.location.href ="/student";
+                }else {
+                   alert(result.data);
+                }
+             },
+            error: function(err){
+              alert(err)
+            }
+         })
+     });
+  });  
+</script>

@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="../static/menu.css">
+    </head>
+    <body onload="adminStudentView();">
+        <div class="topnav" id="myTopnav">
+            <a href="{{url_for('student')}}" class="active">Student</a>
+            <a href="{{url_for('staff')}}">Staff</a>
+            <a href="{{url_for('logout')}}">logout</a>
+            </div><br><br>
+            <button type="button" onclick='window.location.href="addstudent";' class="btn">Add Student</button>
+            <lable style="margin-left:50px; font-weight:bold; font-size:20px;">Search</lable>
+        
+            <input type="text" style="margin-left:12px;" placeholder="ex:2020-2022" id="batch">
+            <input type="text" style="margin-left:9px;" placeholder="ex:MCA" id="dep">
+            <input type="button" value="search" id="searchbtn" class="btn">
+        <div id="studenttable"></div>
+    </body>
+    <script>
+        //login function
+        function adminStudentView(){
+            console.log("studentviwe") 
+            $.ajax({
+                 url: "/studentview",
+                 type: "GET",
+                 contentType: "application/json",
+                 success: function(result) {
+                    console.log(result);
+                    var content="<table class='styled-table'><thead><tr><th>ID</th><th>Name</th><th>Department</th><th>Batch</th></tr></thead><tbody>"
+                    if (result.status==200){
+                        for (var i=0; i < result.data.length; i++) {
+                            var td=""
+                            td="<tr><td>"+result.data[i].user_id+"</td><td>"+result.data[i].uname+"</td><td>"+result.data[i].department+"</td><td>"+result.data[i].batch+"</td></tr>"
+                            content=content+td                       
+                        }
+                        content=content+"</tbody></table>"
+                        console.log("content",content)
+                        $('#studenttable').html(content)
+                    }
+                 },
+                error: function(err){
+                  alert(result.data)
+                }
+             })
+            }   
+    //login function
+    $("document").ready(function(){
+   $("#searchbtn").click(function(){
+       console.log("dggsjdsahcghjdgskvgfeguvbwy");
+       var batch= $("#batch").val();
+       var dep = $("#dep").val(); 
+        $.ajax({
+             url: "/studentsearch/"+batch+"/"+dep,
+             type: "GET",
+             contentType: "application/json",
+             success: function(result) {
+                console.log(result);
+                var content="<table class='styled-table'><thead><tr><th>ID</th><th>Name</th><th>Department</th><th>Batch</th></tr></thead><tbody>"
+                if (result.status==200){
+                    for (var i=0; i < result.data.length; i++) {
+                        var td=""
+                        td="<tr><td>"+result.data[i].user_id+"</td><td>"+result.data[i].uname+"</td><td>"+result.data[i].department+"</td><td>"+result.data[i].batch+"</td></tr>"
+                        content=content+td                       
+                    }
+                    content=content+"</tbody></table>"
+                    console.log("content",content)
+                    $('#studenttable').html(content)
+                }
+             },
+            error: function(result){
+              alert(result.data)
+            }
+         })
+        })
+    })  
+</script>
+</html>

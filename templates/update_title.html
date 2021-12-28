@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    </head>
+    <body>
+        <form>
+            <input type="text" id="title" placeholder="Enter title heres" value="">
+            <input type="button" id="alter" value="Submit">
+        </form>
+    </body>
+    <script>
+        $("document").ready(function(){
+         $("#alter").click(function(){
+             var title = $("#title").val();
+             $.ajax({
+                 url: "/alter",
+                 type: "PUT",
+                 contentType: "application/json",
+                 data: JSON.stringify({"pname":title}),
+                 success: function(result) {
+                    console.log(result);
+                    if (result.status == 200){
+                        console.log("8888888888888")
+                        window.location.href ="/status";
+                    }else {
+                       alert(result.data);
+                    }
+                 },
+                error: function(err){
+                  alert(err)
+                }
+             })
+         });
+      });  
+    </script>
+</html>

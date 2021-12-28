@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/menu.css">
+        <link rel="stylesheet" href="../static/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    </head>
+    <body onload="adminStaffView();">
+        <div class="topnav" id="myTopnav">
+            <a href="{{url_for('student')}}" >Student</a>
+            <a href="{{url_for('staff')}}" class="active">Staff</a>
+            <a href="{{url_for('logout')}}">logout</a>
+            </div><br>
+            <button onclick='window.location.href="addstaff";' class="btn">add staff</button>
+            
+            <lable style="margin-left:50px; font-weight:bold; font-size:20px;">Search</lable>
+            <input type="text" style="margin-left:9px;" placeholder="ex:MCA" id="dep">
+            <input type="button" value="search" id="searchbtn" class="btn">
+        <div id="stafftable"></div>
+            
+    </body>
+
+
+<script>
+        //login function
+        function adminStaffView(){
+            console.log("staffviwe") 
+            $.ajax({
+                 url: "/staffview",
+                 type: "GET",
+                 contentType: "application/json",
+                 success: function(result) {
+                    console.log(result);
+                    var content="<table class='styled-table'><thead><tr><th>ID</th><th>Name</th><th>Department</th><th>Status</th></tr></thead><tbody>"
+                    if (result.status==200){
+                        for (var i=0; i < result.data.length; i++) {
+                            var td=""
+                            td="<tr><td>"+result.data[i].user_id+"</td><td>"+result.data[i].uname+"</td><td>"+result.data[i].department+"</td><td>"+result.data[i].status+"</td><td> <a href='/staffstatus/"+result.data[i].user_id+"'> changeStatus </a></td></tr>"
+                            content=content+td                       
+                        }
+                        content=content+"</tbody></table>"
+                        console.log("content",content)
+                        $('#stafftable').html(content)
+                    }
+                 },
+                error: function(err){
+                  alert(result.data)
+                }
+             })
+            }
+            $("document").ready(function(){
+            $("#searchbtn").click(function(){
+                var dep = $("#dep").val();
+            $.ajax({
+                 url: "/staffsearch/"+dep,
+                 type: "GET",
+                 contentType: "application/json",
+                 success: function(result) {
+                    console.log(result);
+                    var content="<table class='styled-table'><thead><tr><th>ID</th><th>Name</th><th>Department</th><th>Status</th></tr></thead><tbody>"
+                    if (result.status==200){
+                        for (var i=0; i < result.data.length; i++) {
+                            var td=""
+                            td="<tr><td>"+result.data[i].user_id+"</td><td>"+result.data[i].uname+"</td><td>"+result.data[i].department+"</td><td>"+result.data[i].status+"</td><td> <a href='/staffstatus/"+result.data[i].user_id+"'> changeStatus </a></td></tr>"
+                            content=content+td                       
+                        }
+                        content=content+"</tbody></table>"
+                        console.log("content",content)
+                        $('#stafftable').html(content)
+                    }
+                 },
+                error: function(result){
+                  alert(result.data)
+                }
+             })
+            })
+        })
+</script>
+</html>

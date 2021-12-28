@@ -3,46 +3,94 @@
 <head>
 <title>Project Guide</title>
 <link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="../static/menu.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
-<body>
+<body onload="stafflist();">
 
-<div class="menu">
-<ul class="menu">
-<li><a href="user_dashboard.html">Home</a></li>
-<li><a href="status.html">Status</a></li>
-</ul>
+<div class="topnav" id="myTopnav">
+<a href="{{url_for('home')}}" class="active">Home</a>
+<a href="{{url_for('status')}}">Status</a>
+<a href="{{url_for('logout')}}">logout</a>
 </div>
 
 <h1 class="txt">WELCOME</h1>
 <h2 class="txth">Select Your Guide<b/></h2>
-<form method="post" action="check.php">
+<form method="post">
 <table align="center" border=0>
-<tr><td>
-<lable color="blue"><b>Name:</b></lable></td><td>
-<input type="text" placeholder="Ex : Surendar.B" required></td>
-</tr>
-<tr><td>
-<lable color="blue"><b>Reg.No:</b></lable></td><td>
-<input type="text" name="reg" placeholder="Ex : 20MCAxxx" required></td>
-</tr>
 <tr><td>Choose your Guide:</td>
 <td>
-<select name="guide" id="Guide">
-  <option value="volvo">Volvo</option>
-</select></td></tr>
-<tr><td><lable color="blue"><b>Project Tile:</b></lable></td><td>
-<input type="text" placeholder="Enter title here" value="">
+<div id="stafflist"></div>
 </td></tr>
+<tr><td><lable color="blue"><b>Project Tile:</b></lable></td><td>
+<input type="text" id="pname" placeholder="Enter title here" value="">
+</td></tr>
+<tr><td><lable color="blue"><b>Batch:</b></lable></td><td>
+  <input type="text" id="batch" placeholder="Ex:2020-2021" value="">
+  </td></tr>
 <tr><td></td>
 <td>
-<input type="submit" class="btn" name="submit" vlaue="Submit">
+<input type="button" class="btn" name="submit" id="submit" value="Submit">
 </td></tr>
 </table>
 </form>
 <p class="note">**NOTE:-You can Submit Only One Time and Thats Final You can change the title if the guide is not accept your title**</p>
 <p class="note">****NOTE:-You can see the title status in status****</p>
 </body>
-</html>
-</body>
+<script>
+  $("document").ready(function(){
+   $("#submit").click(function(){
+     console.log("bdgdhjksjvjhavcjdbsadvs")
+       var staffid = $("#Guide").val();
+       var pname = $("#pname").val();
+       var batch=$("#batch").val();
+       console.log("@@@@@@@@",batch)
+       $.ajax({
+           url: "/project",
+           type: "POST",
+           contentType: "application/json",
+           data: JSON.stringify({"staffid": staffid,"pname": pname,"batch":batch}),
+           success: function(result) {
+              console.log(result);
+              if (result.status == 200){
+                  window.location.href ="/status";
+              }else {
+                 alert(result.data);
+              }
+           },
+          error: function(err){
+            alert(err)
+          }
+       })
+   });
+});  
+</script>
+<script>
+  //login function
+  function stafflist(){
+      $.ajax({
+           url: "/stafflist",
+           type: "GET",
+           contentType: "application/json",
+           success: function(result) {
+              console.log(result);
+              var content="<select name='guide' id='Guide'>"
+              if (result.status==200){
+                  for (var i=0; i < result.data.length; i++) {
+                      var td="<option value='"+result.data[i].user_id+"'>"+result.data[i].user_id+"</option>"
+                      content=content+td                       
+                  }
+                  content=content+"</select>"
+                   console.log("content",content)
+                  $('#stafflist').html(content)
+              }
+           },
+          error: function(err){
+              console.log(err)
+            alert(err)
+          }
+       })
+      }
+</script>
 </html>
 

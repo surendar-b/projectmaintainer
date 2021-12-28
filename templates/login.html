@@ -1,6 +1,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="../static/login.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
 <div class="wrapper fadeInDown">
@@ -13,10 +14,10 @@
       <img src="{{url_for('static', filename='transparent.png')}}" id="icon" alt="User Icon" />
     </div>
     <!-- Login Form -->
-    <form action="{{url_for('login')}}" method="post" autocomplete="off"> 
-      <input type="text" id="uname" class="fadeIn second" name="uname" placeholder="UserName">
+    <form action="" method="post" autocomplete="off"> 
+      <input type="text" id="uname" class="fadeIn second" name="uname" placeholder="User_ID">
       <input type="text" id="pwd" class="fadeIn third" name="pwd" placeholder="Password">
-      <input type="submit" class="fadeIn fourth" value="Log In">
+      <input type="button" id="login" class="fadeIn fourth" value="Log In">
     </form>
 
     <!-- Remind Passowrd -->
@@ -27,4 +28,31 @@
   </div>
 </div>
 </body>
+<script>
+  //login function
+  $("document").ready(function(){
+   $("#login").click(function(){
+       var uname = $("#uname").val();
+       var pwd = $("#pwd").val();
+       $.ajax({
+           url: "/login",
+           type: "POST",
+           contentType: "application/json",
+           data: JSON.stringify({"uname": uname,"pwd": pwd}),
+           success: function(result) {
+              console.log(result);
+              if (result.status == 200){
+                 window.location.href =  "/home";
+              }else {
+                 alert(result.data);
+              }
+           },
+          error: function(err){
+            alert(result.data)
+          }
+       })
+   });
+});
+
+ </script>
 </html>

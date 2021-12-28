@@ -1,0 +1,71 @@
+<html>
+<head>
+    <link rel="stylesheet" href="../static/style.css">
+    <title>Status</title>
+    <style>
+        .text{
+            font-size:25px;
+            color:black;
+            font-weight: bold;
+            padding:25px;
+        }
+        table{
+            margin-top: 50px;
+            padding: 25px;
+
+        }
+        .tt{
+            align:center;
+            font-weight: bold;
+            font-size: 20px;
+            margin-top:75px;
+            padding: 10px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body onload="studentView();">
+    <div class="menu">
+        <ul class="menu">
+        <li><a href="{{url_for('home')}}">Home</a></li>
+        <li><a href="{{url_for('status')}}">Status</a></li>
+        </ul>
+    </div>
+    <div>
+        <form method="post" action="">
+            <div id="projectdetails">
+                
+            </div>
+        </form>
+    </div>
+        
+</body>
+<script>
+    //login function
+    function studentView(){
+        $.ajax({
+             url: "/student/project",
+             type: "GET",
+             contentType: "application/json",
+             success: function(result) {
+                console.log(result);
+                var content="<table class='styled-table' border='8px'><thead><tr><th>Name</th><th>Batch</th><th>ProjectName</th><th>Status</th><th>Review1</th><th>Review2</th><th>Review3</th></tr></thead><tbody>"
+                if (result.status==200){
+                    for (var i=0; i < result.data.length; i++) {
+                        var td=""
+                        td="<tr><td>"+result.data[i].uname+"</td><td>"+result.data[i].batch+"</td><td>"+result.data[i].projectName+"</td><td>"+result.data[i].status+"</td><td>"+result.data[i].r1+"</td><td>"+result.data[i].r2+"</td><td>"+result.data[i].r3+"</td><td><a href='/updatetitle'> UpdateTitle </a></td></tr>"
+                        content=content+td                       
+                    }
+                    content=content+"</tbody></table>"
+                     console.log("content",content)
+                    $('#projectdetails').html(content)
+                }
+             },
+            error: function(err){
+                console.log(err)
+              alert(err)
+            }
+         })
+        }
+</script>
+</html>

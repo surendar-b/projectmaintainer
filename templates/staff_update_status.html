@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/menu.css">
+        <link rel="stylesheet" href="../static/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="topnav" id="myTopnav">
+            <a href="{{url_for('staffhome')}}" class="active">Home</a>
+            </div>
+            <form>
+                <fieldset disabled>
+                  <div class="form-group">
+                    <label for="disabledTextInput">User_ID</label>
+                    <input type="text" id="uid" class="form-control" placeholder="user_id" value='{{stud_id}}'>
+                  </div>
+                </fieldset>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Status</label>
+                    <select class="form-control" id="status">
+                      <option value="approved">approved</option>
+                      <option value="rejected">rejected</option>
+                    </select>
+                  </div>
+                  <button type="button" id='updatests' class="btn btn-primary">Update</button>
+              </form>
+    </body>
+    <script>
+        $("document").ready(function(){
+         $("#updatests").click(function(){
+             var uid = $("#uid").val();
+             var status = $("#status").val();
+             $.ajax({
+                 url: "/student/status",
+                 type: "PUT",
+                 contentType: "application/json",
+                 data: JSON.stringify({"stud_id": uid,"status": status}),
+                 success: function(result) {
+                    console.log(result);
+                    if (result.status == 200){
+                        window.location.href ="/staffhome";
+                    }else {
+                       alert(result.data);
+                    }
+                 },
+                error: function(err){
+                  alert(err)
+                }
+             })
+         });
+      });  
+    </script>
+    </html>
